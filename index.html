@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./images/favicon-32x32.png"
+    />
+
+    <title>Frontend Mentor | Advice generator app</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "light-cyan": "hsl(193, 38%, 86%)",
+              "neon-green": "hsl(150, 100%, 66%)",
+              "grayish-blue": "hsl(217, 19%, 38%)",
+              "dark-grayish-blue": "hsl(217, 19%, 24%)",
+              "dark-blue": "hsl(218, 23%, 16%)",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="flex min-h-screen justify-center items-center bg-zinc-900">
+    <div>
+      <div
+        class="text-white w-[36rem] h-[16rem] bg-dark-grayish-blue overflow-hidden rounded-2xl text-center"
+      >
+        <div class="mt-8">
+          <div class="text-neon-green text-xl" id="advice_number">ADVICE #</div>
+          <div class="mt-4 text-light-cyan text-[1.5rem] px-8" id="advice">
+            Loading...
+          </div>
+        </div>
+        <div class="mx-[4.5rem] mt-7">
+          <img
+            src="./images/pattern-divider-desktop.svg"
+            alt="Divider Picture"
+          />
+        </div>
+      </div>
+      <div
+        class="bg-neon-green w-[3.2rem] h-[3.2rem] p-[0.85rem] rounded-full flex mx-[16.45rem] mt-[-2rem] group hover:shadow-2xl hover:shadow-neon-green"
+      >
+        <img src="./images/icon-dice.svg" alt="Dice Icon" class="" id="dice" />
+      </div>
+    </div>
+
+    <script>
+      const advice_number = document.getElementById("advice_number");
+      const advice = document.getElementById("advice");
+      const dice = document.getElementById("dice");
+
+      window.onload = LoadAdvice;
+
+      dice.addEventListener("click", function () {
+        LoadAdvice();
+      });
+
+      function LoadAdvice() {
+        fetch("https://api.adviceslip.com/advice")
+          .then((response) => response.json())
+          .then((data) => data.slip)
+          .then((data) => {
+            console.log(data)
+            advice_number.textContent = 'ADIVCE ' + data.id;
+            advice.textContent = data.advice;
+          })
+          .catch((error) => {
+            alert(`Error ${error}`);
+          });
+      }
+    </script>
+  </body>
+</html>
